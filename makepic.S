@@ -1,5 +1,4 @@
 .global _start
-.extern dprintf
 
 .data
 message:
