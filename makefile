@@ -1,7 +1,9 @@
-all: makepic.o
-	ld makepic.o -o makepic -lc
+all: fine.o
+	gcc fine.o -o fine
+run: all
+	convert image.ppm image.png
+fine.o: fine.c
+	gcc -c fine.c
 
-makepic.o: makepic.S
-	gcc -c makepic.S -g
 
 
