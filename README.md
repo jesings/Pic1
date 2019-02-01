@@ -1,3 +1,3 @@
-#I DID THIS IN ASSEMBLY
+I DID THIS IN ASSEMBLY
 
-To run, just do a make, then you can run ./makepic, then do make run, and you have a png
+To run, just do a make run
