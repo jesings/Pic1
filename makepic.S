@@ -33,13 +33,13 @@ _start:
 
 #do gradient
         mov     $0, %r13
-imgy:
+    imgy:
         mov     $0, %r12
-imgx:
+    imgx:
         mov     $4, %rdx
         mov     $one, %rsi
         mov     %r12, %r14
-        and     $1, %r14
+        and     $15, %r14
         jz      after1
         mov     $zero, %rsi
         mov     $2, %rdx
@@ -50,7 +50,7 @@ imgx:
         mov     $4, %rdx
         mov     $one, %rsi
         mov     %r12, %r14
-        and     $1, %r14
+        and     $15, %r14
         jz      after2
         mov     $zero, %rsi
         mov     $2, %rdx
@@ -62,7 +62,8 @@ imgx:
         mov     $4, %rdx
         mov     $one, %rsi
         mov     %r12, %r14
-        and     $1, %r14
+        and     %r13, %r14
+        and     $15, %r14
         jz      after3
         mov     $zero, %rsi
         mov     $2, %rdx
