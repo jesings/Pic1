@@ -4,10 +4,12 @@
 .data
 message:
         .ascii  "P3 512 512 255\n"
-format:
-        .ascii "%d "
 newl:
         .ascii "\n"
+zero:
+        .ascii "0 "
+one:
+        .ascii "255 "
 pathname:
         .ascii "./image.ppm"
 .text
@@ -35,35 +37,40 @@ _start:
 imgy:
         mov     $0, %r12
 imgx:
-#write each color
-        push %rdi
-        push $format
-        mov %r13, %r14
-        and $255, %r14
-        push %r14
-        call dprintf
-        pop %rax
-        pop %rax
-        pop %rax
+        mov     $4, %rdx
+        mov     $one, %rsi
+        mov     %r12, %r14
+        and     $1, %r14
+        jz      after1
+        mov     $zero, %rsi
+        mov     $2, %rdx
+        after1:
+        mov     $1, %rax
+        syscall
+
+        mov     $4, %rdx
+        mov     $one, %rsi
+        mov     %r12, %r14
+        and     $1, %r14
+        jz      after2
+        mov     $zero, %rsi
+        mov     $2, %rdx
+        after2:
+        mov     $1, %rdx
+        mov     $1, %rax
+        syscall
         
-        push %rdi
-        push $format
-        mov %r12, %r14
-        and $255, %r14
-        push %r14
-        call dprintf
-        pop %rax
-        pop %rax
-        pop %rax
-
-        push %rdi
-        push $format
-        push $0
-        call dprintf
-        pop %rax
-        pop %rax
-        pop %rax
-
+        mov     $4, %rdx
+        mov     $one, %rsi
+        mov     %r12, %r14
+        and     $1, %r14
+        jz      after3
+        mov     $zero, %rsi
+        mov     $2, %rdx
+        after3:
+        mov     $1, %rdx
+        mov     $1, %rax
+        syscall
 #handle loop stuff
         mov     $512, %rsi
         
@@ -71,13 +78,13 @@ imgx:
         cmp     %r12, %rsi
         jg      imgx
 
-        push %rdi
-        push $newl
-        call dprintf
-        pop %rax
-        pop %rax
+        mov     $newl, %rsi
+        mov     $1, %rdx
+        mov     $1, %rax
+        syscall
 
         inc     %r13
+        mov     $1536, %rsi
         cmp     %r13, %rsi
         jg      imgy
 
