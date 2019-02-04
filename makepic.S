@@ -5,12 +5,8 @@ message:
         .ascii  "P3 512 512 255\n"
 newl:
         .ascii "\n"
-zero:
-        .ascii "0 "
-one:
-        .ascii "255 "
 pathname:
-        .ascii "./image.ppm"
+        .asciz "./image.ppm"
 .text
 _start:
 
@@ -36,46 +32,32 @@ _start:
     imgy:
         mov     $0, %r12
     imgx:
-        mov     $4, %rdx
-        mov     $one, %rsi
-        mov     %r12, %r14
-        and     $15, %r14
-        jz      after1
-        mov     $zero, %rsi
-        mov     $2, %rdx
-        after1:
+        mov     %r12, %rax
+        shr     $1, %rax
+        call convert
         mov     $1, %rax
+        mov     %rbx, %rdx
+        syscall
+        mov     %r13, %rax
+        shr     $1, %rax
+        call convert
+        mov     $1, %rax
+        mov     %rbx, %rdx
+        syscall
+        mov     %r12, %rax
+        add     %r13, %rax
+        shr     $2, %rax
+        call convert
+        mov     $1, %rax
+        mov     %rbx, %rdx
         syscall
 
-        mov     $4, %rdx
-        mov     $one, %rsi
-        mov     %r12, %r14
-        and     $15, %r14
-        jz      after2
-        mov     $zero, %rsi
-        mov     $2, %rdx
-        after2:
-        mov     $1, %rdx
-        mov     $1, %rax
-        syscall
-        
-        mov     $4, %rdx
-        mov     $one, %rsi
-        mov     %r12, %r14
-        and     %r13, %r14
-        and     $15, %r14
-        jz      after3
-        mov     $zero, %rsi
-        mov     $2, %rdx
-        after3:
-        mov     $1, %rdx
-        mov     $1, %rax
-        syscall
+ 
 #handle loop stuff
-        mov     $512, %rsi
+        mov     $512, %r9
         
         inc     %r12
-        cmp     %r12, %rsi
+        cmp     %r12, %r9
         jg      imgx
 
         mov     $newl, %rsi
@@ -84,9 +66,8 @@ _start:
         syscall
 
         inc     %r13
-        mov     $1536, %rsi
-        cmp     %r13, %rsi
-        jg      imgy
+        cmp     $512, %r13
+        jl      imgy
 
 
 
